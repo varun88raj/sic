@@ -1,4 +1,9 @@
+import sympy
 import random
+import math
+
+MAX_VAL = 2**16
+MIN_VAL = 2**8
 
 def GCD(x, y):
   
@@ -7,39 +12,10 @@ def GCD(x, y):
   
    return x
 
-
-
-def PrimeList():
-    i = 0
-    while(i<len(prime_list)):
-        j = i+1
-        while(j<len(prime_list)):
-            if(prime_list[j]%prime_list[i]==0):
-                prime_list.pop(j)
-                j-=1
-            j+=1
-        i+=1
-
-def generatePrime(n):
-    p = random.randrange(2**(n-1)+1, 2**n-1)
-    while(True):
-        flag = False
-        p = random.randrange(2**(n-1)+1, 2**n-1)
-        for i in range(len(prime_list)):
-            if p%prime_list[i]==0:
-                flag = True
-                break
-        if(not flag):
-            return p
-        
-
-prime_list = [i+1 for i in range(1,1000)]
-PrimeList()
-
 k=3
 
-p = generatePrime(10)
-q = generatePrime(10)
+p = sympy.randprime(MIN_VAL, MAX_VAL)
+q = sympy.randprime(MIN_VAL, MAX_VAL)
 n = p * q
 print("P:" , p)
 print("Q:" , q)
@@ -49,16 +25,10 @@ v=[]
 
 
 for i in range(k):
-    temp = random.randrange(2,n-2)
-    temp1 = None
-    while(temp1 == None):
-        try:
-            while(GCD(temp,n)!=1):
-                temp = random.randrange(2,n-2)
-            t = temp**2
-            temp1 = pow(t, -1, n)
-        except ValueError:
-            temp1 = None
+    temp=2
+    while not(GCD(temp,n)==1) or temp in s:
+        temp=temp+1
+    temp1=pow(pow(temp, 2, n), -1, n)
     s.append(temp)
     v.append(temp1)
     
@@ -72,6 +42,7 @@ c=[]
 for i in range(k):
     c.append(random.randrange(0,50))
 
+print("C:", c)
 y = r
 for i in range(k):
     y*=(s[i]**c[i])
